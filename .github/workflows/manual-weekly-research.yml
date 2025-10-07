@@ -1,0 +1,25 @@
+name: Manual Weekly Research
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  print-md:
+    runs-on: ubuntu-latest
+    name: Print weekly research markdown
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Print weekly research markdown if present
+        run: |
+          echo "---- weekly-research.md (start) ----"
+          if [ -f .github/workflows/weekly-research.md ]; then
+            sed -n '1,200p' .github/workflows/weekly-research.md || cat .github/workflows/weekly-research.md
+          else
+            echo "No .github/workflows/weekly-research.md found"
+          fi
+          echo "---- weekly-research.md (end) ----"
+
+      - name: Finish
+        run: echo "Manual Weekly Research workflow completed."

@@ -1,0 +1,27 @@
+name: weekly-research
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  run:
+    name: Run weekly research (local wrapper)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Show .github/workflows/weekly-research.md (if present)
+        run: |
+          echo "---- weekly-research.md (start) ----"
+          if [ -f .github/workflows/weekly-research.md ]; then
+            sed -n '1,200p' .github/workflows/weekly-research.md || cat .github/workflows/weekly-research.md
+          else
+            echo "No .github/workflows/weekly-research.md found"
+          fi
+          echo "---- weekly-research.md (end) ----"
+
+      - name: Placeholder: run research scaffolding
+        run: |
+          echo "This job is a local wrapper for the weekly-research workflow."
+          echo "If you intended to run a different agentics workflow, update .github/workflows accordingly."
