@@ -1,6 +1,6 @@
 import React, { useRef, Suspense, useEffect } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
-import { MeshWobbleMaterial, OrbitControls, Environment, PerformanceMonitor } from '@react-three/drei'
+import { MeshWobbleMaterial, OrbitControls, PerformanceMonitor } from '@react-three/drei'
 import * as THREE from 'three'
 import Loading from './Loading'
 import { analytics } from './analytics'
@@ -56,7 +56,11 @@ export default function HelloScene(): JSX.Element {
               analytics.trackPerformance(30, 'low')
             }}
           >
+            {/* Background color instead of loading a remote HDR (avoids CORS errors during dev) */}
+            <color attach="background" args={["#071020"]} />
+            {/* Simple lighting fallback so the scene still looks good without an HDRI */}
             <ambientLight intensity={0.5} />
+            <hemisphereLight intensity={0.6} groundColor="#8888ff" />
             <directionalLight position={[5, 5, 5]} intensity={1} />
             <spotLight position={[-5, 5, 5]} angle={0.3} intensity={0.7} />
             <AnimatedTorus />
@@ -65,7 +69,7 @@ export default function HelloScene(): JSX.Element {
               enablePan={false}
               onStart={() => analytics.trackInteraction('rotate')}
             />
-            <Environment preset="city" />
+            {/* Removed Environment preset that fetched HDRIs from a CDN (CORS failures). */}
           </PerformanceMonitor>
         </Suspense>
       </Canvas>
